@@ -5,7 +5,9 @@ from app.models.watchlist import Watchlist
 from app.models.watchlist_stock import WatchlistStock
 from app.services.baseline_service import get_stock_baseline
 from app.services.change_analysis_service import analyze_stock_change
+from app.services.explanation_service import generate_change_explanation
 from app.services.market_snapshot_service import fetch_and_save_snapshot
+from app.services.user_state_service import get_user_stock_state, mark_stock_seen
 from app.services.user_state_service import (
     get_user_stock_state,
     mark_stock_seen,
@@ -80,21 +82,28 @@ def get_watchlist_changes(
                 ),
                 baseline=baseline,
             )
+            explanation = generate_change_explanation(
+    price_change=analysis["price_change"],
+    z_score=analysis["z_score"],
+    volume_ratio=analysis["volume_ratio"],
+    attention_score=analysis["attention_score"],
+)
 
             results.append(
-                {
-                    "symbol": symbol,
-                    "current_price": snapshot.price,
-                    "previous_close": snapshot.previous_close,
-                    "volume": snapshot.volume,
-                    "last_seen_at": (
-                        user_state.last_seen_at
-                        if user_state
-                        else None
-                    ),
-                    **analysis,
-                }
-            )
+    {
+        "symbol": symbol,
+        "current_price": snapshot.price,
+        "previous_close": snapshot.previous_close,
+        "volume": snapshot.volume,
+        "last_seen_at": (
+            user_state.last_seen_at
+            if user_state
+            else None
+        ),
+        **analysis,
+        "explanation": explanation,
+    }
+)
 
         except Exception as exc:
             results.append(
