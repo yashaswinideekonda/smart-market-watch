@@ -1,5 +1,7 @@
+from app.engines.attention_engine.attention_score import calculate_attention_score
 from app.engines.attention_engine.attention_score import (
     calculate_attention_score,
+    calculate_attention_breakdown,
 )
 from app.engines.change_engine import (
     calculate_change_since_last_seen,
@@ -65,6 +67,12 @@ def analyze_stock_change(
         volume_ratio,
         relative_movement,
     )
+    attention_breakdown = calculate_attention_breakdown(
+    change["price_change"],
+    z_score,
+    volume_ratio,
+    relative_movement,
+)
 
     # 7. Determine what happened since the user last saw the stock
     if last_seen_price is None:
@@ -85,4 +93,5 @@ def analyze_stock_change(
         "z_score": z_score,
         "relative_movement": relative_movement,
         "attention_score": attention_score,
+        "attention_breakdown": attention_breakdown,
     }
