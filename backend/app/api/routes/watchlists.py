@@ -1,13 +1,13 @@
 from fastapi import APIRouter, HTTPException
 
 from app.database.session import SessionLocal
+from app.models.market_snapshot import MarketSnapshot
 from app.models.watchlist import Watchlist
 from app.models.watchlist_stock import WatchlistStock
 from app.services.baseline_service import get_stock_baseline
 from app.services.change_analysis_service import analyze_stock_change
 from app.services.explanation_service import generate_change_explanation
 from app.services.market_snapshot_service import fetch_and_save_snapshot
-from app.services.user_state_service import get_user_stock_state, mark_stock_seen
 from app.services.user_state_service import (
     get_user_stock_state,
     mark_stock_seen,
@@ -60,9 +60,30 @@ def get_watchlist_changes(
         symbol = stock.symbol
 
         try:
-            snapshot = fetch_and_save_snapshot(
-                f"{symbol}:NSE"
-            )
+            # Check whether a demo snapshot exists.
+            demo_db = SessionLocal()
+
+            try:
+                demo_snapshot = (
+                    demo_db.query(MarketSnapshot)
+                    .filter(
+                        MarketSnapshot.symbol == symbol,
+                        MarketSnapshot.source == "demo",
+                    )
+                    .order_by(
+                        MarketSnapshot.timestamp.desc()
+                    )
+                    .first()
+                )
+            finally:
+                demo_db.close()
+
+            if demo_snapshot is not None:
+                snapshot = demo_snapshot
+            else:
+                snapshot = fetch_and_save_snapshot(
+                    f"{symbol}:NSE"
+                )
 
             user_state = get_user_stock_state(
                 user_id,
@@ -82,28 +103,29 @@ def get_watchlist_changes(
                 ),
                 baseline=baseline,
             )
+
             explanation = generate_change_explanation(
-    price_change=analysis["price_change"],
-    z_score=analysis["z_score"],
-    volume_ratio=analysis["volume_ratio"],
-    attention_score=analysis["attention_score"],
-)
+                price_change=analysis["price_change"],
+                z_score=analysis["z_score"],
+                volume_ratio=analysis["volume_ratio"],
+                attention_score=analysis["attention_score"],
+            )
 
             results.append(
-    {
-        "symbol": symbol,
-        "current_price": snapshot.price,
-        "previous_close": snapshot.previous_close,
-        "volume": snapshot.volume,
-        "last_seen_at": (
-            user_state.last_seen_at
-            if user_state
-            else None
-        ),
-        **analysis,
-        "explanation": explanation,
-    }
-)
+                {
+                    "symbol": symbol,
+                    "current_price": snapshot.price,
+                    "previous_close": snapshot.previous_close,
+                    "volume": snapshot.volume,
+                    "last_seen_at": (
+                        user_state.last_seen_at
+                        if user_state
+                        else None
+                    ),
+                    **analysis,
+                    "explanation": explanation,
+                }
+            )
 
         except Exception as exc:
             results.append(
@@ -132,11 +154,14 @@ def get_watchlist_changes(
             "You're all caught up. Nothing meaningful changed "
             "since your last visit."
         )
+
     elif len(meaningful_changes) == 1:
         summary_message = "1 thing deserves your attention."
+
     else:
         summary_message = (
-            f"{len(meaningful_changes)} things deserve your attention."
+            f"{len(meaningful_changes)} things deserve "
+            "your attention."
         )
 
     return {

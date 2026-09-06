@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes.watchlists import router as watchlist_router
+from app.api.routes.demo import router as demo_router
 
 
 app = FastAPI(
@@ -23,6 +24,7 @@ app.add_middleware(
 
 
 app.include_router(watchlist_router)
+app.include_router(demo_router)
 
 
 @app.get("/health")
