@@ -66,9 +66,20 @@ def analyze_stock_change(
         relative_movement,
     )
 
+    # 7. Determine what happened since the user last saw the stock
+    if last_seen_price is None:
+        observation_status = "FIRST_OBSERVATION"
+    elif change["price_change"] is None:
+        observation_status = "UNKNOWN"
+    elif abs(change["price_change"]) < 0.01:
+        observation_status = "NO_CHANGE"
+    else:
+        observation_status = "CHANGED"
+
     return {
         "price_change": change["price_change"],
         "price_status": change["status"],
+        "observation_status": observation_status,
         "daily_return": daily_return,
         "volume_ratio": volume_ratio,
         "z_score": z_score,

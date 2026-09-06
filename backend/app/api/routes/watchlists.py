@@ -6,7 +6,10 @@ from app.models.watchlist_stock import WatchlistStock
 from app.services.baseline_service import get_stock_baseline
 from app.services.change_analysis_service import analyze_stock_change
 from app.services.market_snapshot_service import fetch_and_save_snapshot
-from app.services.user_state_service import get_user_stock_state, mark_stock_seen
+from app.services.user_state_service import (
+    get_user_stock_state,
+    mark_stock_seen,
+)
 
 
 router = APIRouter(
@@ -109,14 +112,41 @@ def get_watchlist_changes(
         reverse=True,
     )
 
+    meaningful_changes = [
+        item
+        for item in results
+        if item.get("attention_score", 0) >= 30
+    ]
+
+    if len(meaningful_changes) == 0:
+        summary_message = (
+            "You're all caught up. Nothing meaningful changed "
+            "since your last visit."
+        )
+    elif len(meaningful_changes) == 1:
+        summary_message = "1 thing deserves your attention."
+    else:
+        summary_message = (
+            f"{len(meaningful_changes)} things deserve your attention."
+        )
+
     return {
         "watchlist_id": watchlist_id,
         "watchlist_name": watchlist.name,
+        "summary": {
+            "meaningful_changes": len(meaningful_changes),
+            "message": summary_message,
+        },
         "stocks": results,
         "count": len(results),
     }
+
+
 @router.post("/{watchlist_id}/mark-seen")
-def mark_watchlist_seen(watchlist_id: int, user_id: int = 2):
+def mark_watchlist_seen(
+    watchlist_id: int,
+    user_id: int = 2,
+):
     db = SessionLocal()
 
     try:
@@ -137,7 +167,9 @@ def mark_watchlist_seen(watchlist_id: int, user_id: int = 2):
 
         stocks = (
             db.query(WatchlistStock)
-            .filter(WatchlistStock.watchlist_id == watchlist_id)
+            .filter(
+                WatchlistStock.watchlist_id == watchlist_id
+            )
             .all()
         )
 
@@ -150,7 +182,9 @@ def mark_watchlist_seen(watchlist_id: int, user_id: int = 2):
         symbol = stock.symbol
 
         try:
-            snapshot = fetch_and_save_snapshot(f"{symbol}:NSE")
+            snapshot = fetch_and_save_snapshot(
+                f"{symbol}:NSE"
+            )
 
             state = mark_stock_seen(
                 user_id=user_id,
