@@ -1214,24 +1214,24 @@ function App() {
     </div>
 
     <button
-      className="demo-button"
-      onClick={async () => {
-        try {
-          await fetch(
-            API_BASE + `/api/demo/watchlists/${data.watchlist_id}/simulate-change`
-            {
-              method: "POST",
-            },
-          );
+  className="demo-button"
+  onClick={async () => {
+    try {
+      await fetch(
+        API_BASE + `/api/demo/watchlists/${data.watchlist_id}/simulate-change`,
+        {
+          method: "POST",
+        },
+      );
 
-          await loadAllData();
-        } catch (error) {
-          console.error(error);
-        }
-      }}
-    >
-      Simulate change →
-    </button>
+      await loadAllData();
+    } catch (error) {
+      console.error(error);
+    }
+  }}
+>
+  Simulate change →
+</button>
 
   </div>
 
