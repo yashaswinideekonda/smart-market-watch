@@ -8,6 +8,7 @@ from app.api.routes.watchlist_management import (
 )
 from app.api.routes.stocks import router as stocks_router
 from app.routers.auth import router as auth_router
+from app.database.init_db import init_db
 app = FastAPI(
     title="Smart Market Watch API",
     version="1.0.0",
@@ -34,6 +35,9 @@ app.include_router(stocks_router)
 app.include_router(auth_router)
 
 
+@app.on_event("startup")
+def startup():
+    init_db()
 
 
 @app.get("/health")
