@@ -67,13 +67,21 @@ def simulate_market_change(
             )
 
             if latest_snapshot is None:
-                continue
+                old_price = 1000.0
+                previous_close = 1000.0
+                volume = 1000000.0
+                snapshot_symbol = stock.symbol
+            else:
+                old_price = latest_snapshot.price
+                previous_close = latest_snapshot.previous_close or latest_snapshot.price
+                volume = latest_snapshot.volume or 1000000.0
+                snapshot_symbol = latest_snapshot.symbol
 
             simulated_snapshot = MarketSnapshot(
-                symbol=latest_snapshot.symbol,
+                symbol=snapshot_symbol,
                 price=price,
-                previous_close=latest_snapshot.previous_close,
-                volume=latest_snapshot.volume,
+                previous_close=previous_close,
+                volume=volume,
                 timestamp=datetime.utcnow(),
                 source="demo",
                 is_stale=False,
@@ -84,7 +92,7 @@ def simulate_market_change(
             simulated_stocks.append(
                 {
                     "symbol": stock.symbol,
-                    "old_price": latest_snapshot.price,
+                    "old_price": old_price,
                     "new_price": price,
                 }
             )
