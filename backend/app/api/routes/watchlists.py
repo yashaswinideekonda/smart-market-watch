@@ -67,7 +67,7 @@ def get_watchlist_changes(
                 demo_snapshot = (
                     demo_db.query(MarketSnapshot)
                     .filter(
-                        MarketSnapshot.symbol == symbol,
+                        MarketSnapshot.symbol.in_([symbol, f"{symbol}:NSE"]),
                         MarketSnapshot.source == "demo",
                     )
                     .order_by(
