@@ -7,7 +7,7 @@ from app.api.routes.watchlist_management import (
     router as watchlist_management_router,
 )
 from app.api.routes.stocks import router as stocks_router
-
+from app.routers.auth import router as auth_router
 
 app = FastAPI(
     title="Smart Market Watch API",
@@ -31,6 +31,9 @@ app.include_router(watchlist_router)
 app.include_router(demo_router)
 app.include_router(watchlist_management_router)
 app.include_router(stocks_router)
+app.include_router(auth_router)
+
+
 
 
 @app.get("/health")

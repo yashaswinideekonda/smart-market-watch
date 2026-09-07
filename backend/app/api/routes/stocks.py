@@ -233,14 +233,19 @@ def get_stock_history(
                 }
             )
 
-        return {
+            return {
             "symbol": symbol,
             "interval": interval,
             "history": history,
         }
 
     except Exception as exc:
-        raise HTTPException(
-            status_code=502,
-            detail=f"Failed to load historical data: {str(exc)}",
-        )
+        # Graceful fallback when the market-data provider
+        # is temporarily unavailable or rate-limited.
+        return {
+            "symbol": symbol,
+            "interval": interval,
+            "history": [],
+            "data_status": "unavailable",
+            "message": "Historical data is temporarily unavailable.",
+        }
