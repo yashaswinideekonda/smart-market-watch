@@ -1218,11 +1218,11 @@ function App() {
   onClick={async () => {
     try {
       await fetch(
-        API_BASE + `/api/demo/watchlists/${data.watchlist_id}/simulate-change`,
-        {
-          method: "POST",
-        },
-      );
+  API_BASE + `/api/demo/watchlists/${data.watchlist_id}/simulate-change?user_id=${userId}`,
+  {
+    method: "POST",
+  },
+);
 
       await loadAllData();
     } catch (error) {
