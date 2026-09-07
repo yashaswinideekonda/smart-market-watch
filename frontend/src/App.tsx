@@ -271,7 +271,7 @@ function App() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/watchlists/1/mark-seen",
+        API_BASE + `/api/watchlists/${activeWatchlistId}/mark-seen?user_id=${userId}`,
         {
           method: "POST",
         },
