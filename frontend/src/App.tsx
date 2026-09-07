@@ -1218,7 +1218,7 @@ function App() {
       onClick={async () => {
         try {
           await fetch(
-            `http://localhost:8000/api/demo/watchlists/${data.watchlist_id}/simulate-change`,
+            API_BASE + `/api/demo/watchlists/${data.watchlist_id}/simulate-change`
             {
               method: "POST",
             },
