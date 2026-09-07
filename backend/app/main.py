@@ -8,7 +8,6 @@ from app.api.routes.watchlist_management import (
 )
 from app.api.routes.stocks import router as stocks_router
 from app.routers.auth import router as auth_router
-
 app = FastAPI(
     title="Smart Market Watch API",
     version="1.0.0",
