@@ -78,12 +78,12 @@ def get_watchlist_changes(
             finally:
                 demo_db.close()
 
-            if demo_snapshot is not None:
-                snapshot = demo_snapshot
-            else:
-                snapshot = fetch_and_save_snapshot(
-                    f"{symbol}:NSE"
-                )
+           if demo_snapshot is None:
+    raise RuntimeError(
+        "No demo snapshot available. Click Simulate Change first."
+    )
+
+snapshot = demo_snapshot
 
             user_state = get_user_stock_state(
                 user_id,
