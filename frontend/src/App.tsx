@@ -115,10 +115,9 @@ function App() {
     throw new Error("No watchlist found");
   }
 
-  const activeWatchlistId = watchlistsResult.watchlists[0].id;
 
   const response = await fetch(
-    API_BASE + `/api/watchlists/${1}/changes?user_id=${userId}`,
+    API_BASE + `/api/watchlists/1/changes?user_id=${userId}`,
   );
 
   if (!response.ok) {
@@ -271,7 +270,7 @@ function App() {
 
     try {
       const response = await fetch(
-        API_BASE + `/api/watchlists/${1}/mark-seen?user_id=${userId}`,
+        API_BASE + `/api/watchlists/1/mark-seen?user_id=${userId}`,
         {
           method: "POST",
         },
