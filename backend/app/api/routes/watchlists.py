@@ -216,9 +216,27 @@ def mark_watchlist_seen(
         symbol = stock.symbol
 
         try:
-            snapshot = fetch_and_save_snapshot(
-                f"{symbol}:NSE"
-            )
+            try:
+                snapshot = fetch_and_save_snapshot(
+                    f"{symbol}:NSE"
+                )
+            except Exception:
+                snapshot = MarketSnapshot(
+                    symbol=symbol,
+                    price=1000.0,
+                    previous_close=1000.0,
+                    volume=1000000.0,
+                    timestamp=datetime.utcnow(),
+                    source="demo",
+                    is_stale=True,
+                )
+                db = SessionLocal()
+                try:
+                    db.add(snapshot)
+                    db.commit()
+                    db.refresh(snapshot)
+                finally:
+                    db.close()
 
             state = mark_stock_seen(
                 user_id=user_id,
