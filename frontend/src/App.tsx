@@ -1048,6 +1048,63 @@ function App() {
               ))}
           </div>
         </section>
+        {/* ATTENTION RADAR */}
+<section className="dashboard-chart">
+  <div className="section-heading">
+    <div>
+      <p className="eyebrow">ATTENTION RADAR</p>
+      <h3>Where should you look first?</h3>
+    </div>
+
+    <span className="stock-count">
+      Ranked by attention
+    </span>
+  </div>
+
+  <div className="radar-list">
+    {[...data.stocks]
+      .sort(
+        (a, b) =>
+          b.attention_score - a.attention_score,
+      )
+      .map((stock) => (
+        <div
+          className="radar-row"
+          key={stock.symbol}
+          onClick={() =>
+            openStockDetails(stock.symbol)
+          }
+        >
+          <div className="radar-stock">
+            <strong>{stock.symbol}</strong>
+            <span>
+              {stock.price_change >= 0 ? "+" : ""}
+              {stock.price_change?.toFixed(2) ?? "0.00"}%
+            </span>
+          </div>
+
+          <div className="radar-track">
+            <div
+              className="radar-fill"
+              style={{
+                width: `${stock.attention_score}%`,
+              }}
+            />
+          </div>
+
+          <div className="radar-score">
+            <strong>{stock.attention_score}</strong>
+            <span>/100</span>
+          </div>
+        </div>
+      ))}
+  </div>
+
+  <p className="radar-note">
+    Higher attention means the stock has experienced a
+    more meaningful change since you last saw it.
+  </p>
+</section>
 
         
 
