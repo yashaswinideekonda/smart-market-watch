@@ -425,7 +425,7 @@ function App() {
               onClick={async () => {
   try {
     const response = await fetch(
-        API_BASE + "/api/auth/login",
+       API_BASE + (showSignup ? "/api/auth/signup" : "/api/auth/login"),
       {
         method: "POST",
         headers: {
