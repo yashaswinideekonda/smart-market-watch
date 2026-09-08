@@ -955,7 +955,7 @@ function App() {
         ====================================================== */}
 
         {/* ANALYTICS OVERVIEW */}
-        <section className="analytics-overview">
+        <section className="analytics-section">
           <div className="section-heading">
             <div>
               <p className="eyebrow">MARKET ANALYTICS</p>
@@ -1009,7 +1009,7 @@ function App() {
             </div>
           </div>
 
-          <div className="attention-ranking">
+          <div className="attention-section">
             <div className="section-heading">
               <div>
                 <p className="eyebrow">ATTENTION RANKING</p>
