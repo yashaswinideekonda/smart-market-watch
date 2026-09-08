@@ -13,13 +13,12 @@ class MarketDataService:
         url = f"{self.BASE_URL}/quote"
 
         params = {
-    "symbol": symbol,
-    "apikey": self.api_key,
-}
+            "symbol": symbol,
+            "apikey": self.api_key,
+        }
 
         response = httpx.get(
             url,
-            headers=headers,
             params=params,
             timeout=10.0,
         )
@@ -44,15 +43,14 @@ class MarketDataService:
         url = f"{self.BASE_URL}/time_series"
 
         params = {
-    "symbol": symbol,
-    "interval": interval,
-    "outputsize": outputsize,
-    "apikey": self.api_key,
-}
+            "symbol": symbol,
+            "interval": interval,
+            "outputsize": outputsize,
+            "apikey": self.api_key,
+        }
 
         response = httpx.get(
             url,
-            headers=headers,
             params=params,
             timeout=15.0,
         )
