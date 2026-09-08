@@ -2529,3 +2529,133 @@ button {
     margin-top: 5px;
   }
 }
+/* =========================
+   ANALYTICS DASHBOARD
+   ========================= */
+
+.analytics-section {
+  margin: 28px 0 40px;
+}
+
+.analytics-section h3 {
+  margin: 0 0 18px;
+  font-size: 22px;
+  color: #171a21;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.analytics-card {
+  background: #ffffff;
+  border: 1px solid #e6e8ec;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 6px 20px rgba(20, 20, 40, 0.05);
+}
+
+.analytics-card .label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #8a9099;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.analytics-card .value {
+  display: block;
+  margin-top: 8px;
+  font-size: 30px;
+  font-weight: 800;
+  color: #171a21;
+}
+
+.analytics-card .subtext {
+  margin-top: 5px;
+  font-size: 13px;
+  color: #69707b;
+}
+
+/* Attention ranking */
+
+.attention-section {
+  margin: 28px 0 40px;
+  background: #ffffff;
+  border: 1px solid #e6e8ec;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 6px 20px rgba(20, 20, 40, 0.05);
+}
+
+.attention-section h3 {
+  margin: 0 0 20px;
+  font-size: 22px;
+}
+
+.attention-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 55px;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 15px;
+}
+
+.attention-symbol {
+  font-weight: 800;
+}
+
+.attention-bar {
+  height: 10px;
+  background: #eef0f4;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.attention-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7c3aed, #4f46e5);
+}
+
+.attention-score {
+  text-align: right;
+  font-weight: 800;
+}
+
+/* Dashboard graph */
+
+.dashboard-chart {
+  margin: 28px 0 40px;
+  background: #ffffff;
+  border: 1px solid #e6e8ec;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 6px 20px rgba(20, 20, 40, 0.05);
+}
+
+.dashboard-chart h3 {
+  margin: 0 0 20px;
+  font-size: 22px;
+}
+
+/* Mobile */
+
+@media (max-width: 800px) {
+  .analytics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .attention-row {
+    grid-template-columns: 80px 1fr 45px;
+    gap: 8px;
+  }
+}
