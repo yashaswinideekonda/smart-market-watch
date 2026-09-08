@@ -1078,7 +1078,7 @@ function App() {
           <div className="radar-stock">
             <strong>{stock.symbol}</strong>
             <span>
-              {stock.price_change >= 0 ? "+" : ""}
+              {(stock.price_change ?? 0) >= 0 ? "+" : ""}
               {stock.price_change?.toFixed(2) ?? "0.00"}%
             </span>
           </div>
