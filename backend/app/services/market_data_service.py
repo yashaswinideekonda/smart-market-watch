@@ -12,13 +12,10 @@ class MarketDataService:
     def get_quote(self, symbol: str) -> dict:
         url = f"{self.BASE_URL}/quote"
 
-        headers = {
-            "Authorization": f"apikey {self.api_key}"
-        }
-
         params = {
-            "symbol": symbol,
-        }
+    "symbol": symbol,
+    "apikey": self.api_key,
+}
 
         response = httpx.get(
             url,
