@@ -186,7 +186,7 @@ function App() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/watchlists/1/stocks?user_id=2",
+        API_BASE + `/api/watchlists/1/stocks?user_id=${userId}`,
         {
           method: "POST",
           headers: {
