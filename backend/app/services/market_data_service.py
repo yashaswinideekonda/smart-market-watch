@@ -43,15 +43,12 @@ class MarketDataService:
     ) -> dict:
         url = f"{self.BASE_URL}/time_series"
 
-        headers = {
-            "Authorization": f"apikey {self.api_key}"
-        }
-
         params = {
-            "symbol": symbol,
-            "interval": interval,
-            "outputsize": outputsize,
-        }
+    "symbol": symbol,
+    "interval": interval,
+    "outputsize": outputsize,
+    "apikey": self.api_key,
+}
 
         response = httpx.get(
             url,
