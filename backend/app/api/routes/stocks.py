@@ -78,18 +78,18 @@ def get_stock_details(
         )
 
         # --------------------------------------------------
-# 3. Try real market data first
-#    Fall back to demo data if unavailable
-# --------------------------------------------------
-try:
-    snapshot = fetch_and_save_snapshot(
-        provider_symbol
-    )
-except Exception:
-    if demo_snapshot is None:
-        raise
+        # 3. Try real market data first
+        #    Fall back to demo data if unavailable
+        # --------------------------------------------------
+        try:
+            snapshot = fetch_and_save_snapshot(
+                provider_symbol
+            )
+        except Exception:
+            if demo_snapshot is None:
+                raise
 
-    snapshot = demo_snapshot
+            snapshot = demo_snapshot
 
         # --------------------------------------------------
         # 4. Get the user's last-seen state
