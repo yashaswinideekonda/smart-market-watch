@@ -310,12 +310,11 @@ function App() {
        * STEP 1:
        * Load stock details.
        */
-      const response = await fetch(
-        `http://localhost:8000/api/stocks/${encodeURIComponent(
-          symbol,
-        )}?user_id=2`,
-      );
-
+     const response = await fetch(
+  API_BASE + `/api/stocks/${encodeURIComponent(
+    symbol,
+  )}?user_id=${userId}`,
+);
       if (!response.ok) {
         const errorText = await response.text();
 
@@ -336,10 +335,10 @@ function App() {
 
       try {
         const historyResponse = await fetch(
-          `http://localhost:8000/api/stocks/${encodeURIComponent(
-            symbol,
-          )}/history`,
-        );
+  API_BASE + `/api/stocks/${encodeURIComponent(
+    symbol,
+  )}/history`,
+);
 
         if (historyResponse.ok) {
           const historyResult =
